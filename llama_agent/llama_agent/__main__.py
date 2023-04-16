@@ -11,8 +11,8 @@ def main():
     openaichat = ChatOpenAI(
         model_name="gpt-4",
         temperature=0.0,
-        openai_api_key="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",
-        openai_organization="org-1ZDAvajC6v2ZtAP9hLEIsXRz",
+        openai_api_key="YOUR API KEY",
+        openai_organization="YOUR ORG KEY",
         max_tokens=400,
     )
 
