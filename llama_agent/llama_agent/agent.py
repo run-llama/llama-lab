@@ -74,7 +74,7 @@ class Agent:
 
         date_str = "The current date is " + get_date()
         recent_memories = self.create_memories(memory)
-        print(recent_memories)
+        # print(recent_memories)
         prompt = prompt_template.format_prompt(
             desc=desc,
             memory=recent_memories,

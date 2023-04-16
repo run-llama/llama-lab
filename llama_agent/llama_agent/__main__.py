@@ -5,7 +5,12 @@ from llama_agent.utils import print_pretty
 from llama_agent.actions import run_command
 from langchain.chat_models import ChatOpenAI
 
+# import logging
+
+
 def main():
+    # logger = logging.getLogger()
+    # logger.level = logging.WARN
     # Enter your OpenAI API key here:
 
     openaichat = ChatOpenAI(
@@ -27,9 +32,9 @@ def main():
         print_pretty(response)
         action, args = response.command.action, response.command.args
         user_confirm = input(
-            "Should I run the command \""
+            'Should I run the command "'
             + action
-            + "\" with args "
+            + '" with args '
             + json.dumps(args)
             + "? (y/[N])\n"
         )
@@ -37,7 +42,7 @@ def main():
             action_results = run_command(user_query, action, args, openaichat)
             # print(action_results)
             agent.memory.append(action_results)
-            if action_results == "exit":
+            if action_results == "exit" or action_results == "done":
                 break
         else:
             break

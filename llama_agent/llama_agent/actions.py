@@ -74,6 +74,7 @@ def run_command(user_query: str, command: str, args: Dict, llm: BaseLLM) -> str:
         print("Querying...\n")
         response = query_docs(args["docs"], args["query"], service_context)
         print(response)
+        return response
     elif command == "write":
         print("Writing to file...\n")
         return write_to_file(args["file_name"], args["data"])
@@ -119,15 +120,10 @@ def download_web(url: str, doc_name: str, service_context: ServiceContext):
 def query_docs(docs, query, service_context):
     query_configs = [
         {
-            "index_struct_type": "simple_dict",
+            "index_struct_type": "list",
             "query_mode": "default",
-            "query_kwargs": {"similarity_top_k": 1},
-        },
-        {
-            "index_struct_type": "keyword_table",
-            "query_mode": "simple",
-            "query_kwargs": {"response_mode": "tree_summarize"},
-        },
+            "query_kwargs": {"response_mode": "tree_summarize", "use_async": True},
+        }
     ]
     print("Opening web summary cache")
     with open("data/web_summary_cache.json", "r") as f:
@@ -161,4 +157,4 @@ def write_to_file(file_name, data):
     print("Writing to file" + file_name)
     with open(file_name, "w") as f:
         f.write(data)
-    return "Done"
+    return "done"
