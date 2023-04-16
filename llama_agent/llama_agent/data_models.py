@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, root_validator
-from typing import Dict
+from typing import Dict, Union, List
 
 
 class Command(BaseModel):
@@ -8,7 +8,7 @@ class Command(BaseModel):
 
     @root_validator
     def validate_all(cls, values):
-        print(f"{values}")
+        # print(f"{values}")
         if values["action"] == "search" and "search_terms" not in values["args"]:
             raise ValueError("malformed search args")
         if values["action"] == "download" and (
@@ -28,8 +28,14 @@ class Command(BaseModel):
 
 class Response(BaseModel):
     thoughts: str = Field(description="This what the AI is currently thinking.")
+    remember: str = Field(description="This is what the AI just did.")
     reasoning: str = Field(
         description="This is why the AI thinks it will help lead to the user's desired result"
     )
-    plan: str = Field(description="This is the AI's current plan of action")
+    plan: Union[str, object] = Field(
+        description="This is the AI's current plan of action"
+    )
+    criticism: str = Field(
+        description="The AI's constructive self criticism."
+    )
     command: Command = Field(description="This is the AI's current command")

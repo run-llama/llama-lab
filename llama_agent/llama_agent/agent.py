@@ -7,6 +7,8 @@ from langchain.prompts import (
     HumanMessagePromptTemplate,
 )
 from langchain.schema import AIMessage
+from typing import List
+from llama_agent.tokens import count_tokens
 
 
 class Agent:
@@ -45,19 +47,23 @@ class Agent:
         llm_input = self.create_chat_messages(
             self.desc, self.task, self.memory, format_instructions
         ).to_messages()
-        print(llm_input)
+        # print(llm_input)
         output: AIMessage = self.llm(llm_input)
-        print(output.content)
+        # print(output.content)
         self.memory.append(output.content)
         response_obj = parser.parse(output.content)
-        print(response_obj)
+        # print(response_obj)
         return response_obj
 
-    def create_chat_messages(self, desc, task, memory, format_instructions):
+    def create_chat_messages(
+        self, desc: str, task: str, memory: List[str], format_instructions: str
+    ):
         """Create the messages for the agent."""
         messages = []
-        template = "{desc}\n{memory}\n{date}\n{format_instructions}"
-        system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+        system_template = "{desc}\n{memory}\n{date}\n{format_instructions}"
+        system_message_prompt = SystemMessagePromptTemplate.from_template(
+            system_template
+        )
         messages.append(system_message_prompt)
 
         human_template = "{text}"
@@ -67,12 +73,26 @@ class Agent:
         prompt_template = ChatPromptTemplate.from_messages(messages)
 
         date_str = "The current date is " + get_date()
+        recent_memories = self.create_memories(memory)
         prompt = prompt_template.format_prompt(
             desc=desc,
-            memory="\n".join(memory),
+            memory=recent_memories,
             date=date_str,
             format_instructions=format_instructions,
             text=task,
         )
 
         return prompt
+
+    def create_memories(self, memory: List[str], max_tokens: int = 2000):
+        # print(memory)
+        token_counter = 0
+        memories: List[str] = []
+        memories.insert(0, memory[0])  # always include memories header.
+        token_counter += count_tokens(memory[0])
+        memory_index = len(memory) - 1
+        while memory_index > 0 and token_counter < max_tokens:
+            memories.insert(1, memory[memory_index])
+            token_counter += count_tokens(memory[memory_index])
+            memory_index -= 1
+        return "\n".join(memories)
