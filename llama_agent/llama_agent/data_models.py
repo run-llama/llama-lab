@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, root_validator
 from typing import Dict, Union, List
+import json
 
 
 class Command(BaseModel):
@@ -25,17 +26,17 @@ class Command(BaseModel):
             raise ValueError("malformed write args")
         return values
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
 
 class Response(BaseModel):
+    remember: str = Field(description="This is what the AI just accomplished. Probably should not do it again")
     thoughts: str = Field(description="This what the AI is currently thinking.")
-    remember: str = Field(description="This is what the AI just did.")
     reasoning: str = Field(
         description="This is why the AI thinks it will help lead to the user's desired result"
     )
     plan: Union[str, object] = Field(
         description="This is the AI's current plan of action"
-    )
-    criticism: str = Field(
-        description="The AI's constructive self criticism."
     )
     command: Command = Field(description="This is the AI's current command")

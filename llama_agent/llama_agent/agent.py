@@ -50,7 +50,7 @@ class Agent:
         # print(llm_input)
         output: AIMessage = self.llm(llm_input)
         # print(output.content)
-        self.memory.append(output.content)
+        self.memory.append("Old thought: " + output.content)
         response_obj = parser.parse(output.content)
         # print(response_obj)
         return response_obj
@@ -74,6 +74,7 @@ class Agent:
 
         date_str = "The current date is " + get_date()
         recent_memories = self.create_memories(memory)
+        print(recent_memories)
         prompt = prompt_template.format_prompt(
             desc=desc,
             memory=recent_memories,

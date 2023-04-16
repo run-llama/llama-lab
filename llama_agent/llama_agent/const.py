@@ -9,35 +9,29 @@ I may take the following actions with my response:
 
 All my responses should be in the following format and contain all the fields:
 {
+    "remember": This is what I just accomplished. I probably should not do it again,
     "thoughts": This is what I'm thinking right now,
-    "remember": This is what I just did.
     "reasoning": This is why I'm thinking it will help lead to the user's desired result,
     "plan": This is a description of my current plan of actions,
-    "criticism: The is my constructive self criticism.
     "command": {
         "action": My current action,
         "args": [command_arg1, command_arg2, ...]
     }
 }
 command_action should exclusively consist of these commands:
-{"action": "search", "args": {"search_terms": search_terms}}
-{"action": "download", "args": {"url": url, "doc_name": doc_name}}
-{"action": "query", "args": {"docs": [doc_name1, doc_name2, ...], "query": query}}
-{"action": "write", "args": {"file_name": file_name, "data": data}}
+{"action": "search", "args": {"search_terms": search_terms: str}}
+{"action": "download", "args": {"url": url: list[str], "doc_name": doc_name: list[str]}}
+{"action": "query", "args": {"docs": [doc_name1: str, doc_name2: str, ...], "query": query: str}}
+{"action": "write", "args": {"file_name": file_name: str, "data": data: str}}
 {"action": "exit"}
 
-I should not try to query a document that has not been downloaded.
-I should only query documents that contain relevant information for the user's query.
-I should avoid repeating the same search.
-I should Think about my previous action memories before deciding what to do.
-I should include the current date in the search terms if it is relevant.
-I should make sure to include my command at the end.
+If you already got good search results, you should not need to search again.
 """
 
 SEARCH_RESULTS_TEMPLATE = """I searched for {search_terms} and found the following results.
 If any of these results help to answer the user's query {user_query}
-I should respond with which web urls I should download in JSON
-Otherwise I should try with different search terms."""
+I should respond with which web urls I should download and state I don't need
+more searching. Otherwise I should suggest different search terms."""
 
 WEB_DOWNLOAD = (
     """Downloaded the contents of {url} to {doc_name}. To summarize: {summary}"""
