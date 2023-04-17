@@ -1,11 +1,3 @@
-from langchain.chains.prompt_selector import ConditionalPromptSelector, is_chat_model
-from langchain.prompts.chat import (
-    AIMessagePromptTemplate,
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate
-)
-
 #############################################
 ##### AGI Prefix #####
 #############################################
@@ -42,7 +34,8 @@ LC_SUFFIX = (
     "Using your current objective, your previously completed tasks, and your available tools,"
     "Complete the current task.\n"
     "Begin!\n"
-    "Task: {input}\n"
+    # "{execution_history}"
+    "Task: {task}\n"
     "Thought: {agent_scratchpad}"
 )
 
@@ -73,7 +66,7 @@ DEFAULT_TASK_CREATE_TMPL = (
     "create new tasks to be completed that do not overlap with incomplete tasks. "
     "Return the tasks as an array."
 )
-#TASK_CREATE_PROMPT = QuestionAnswerPrompt(DEFAULT_TASK_CREATE_TMPL)
+# TASK_CREATE_PROMPT = QuestionAnswerPrompt(DEFAULT_TASK_CREATE_TMPL)
 
 DEFAULT_REFINE_TASK_CREATE_TMPL = (
     f"{PREFIX}"
@@ -83,12 +76,13 @@ DEFAULT_REFINE_TASK_CREATE_TMPL = (
     "---------------------\n"
     "{context_msg}"
     "\n---------------------\n"
+    "And here is a summary of some past"
     "Currently, you have created the following new tasks: {existing_answer}"
     "Given the current objective, the current incomplete tasks, list of newly created tasks, and the latest completed task, "
     "add new tasks to be completed that do not overlap with incomplete tasks. "
     "Return the tasks as an array. If you have no more tasks to add, repeat the existing list of new tasks."
 )
-#REFINE_TASK_CREATE_PROMPT = RefinePrompt(DEFAULT_REFINE_TASK_CREATE_TMPL)
+# REFINE_TASK_CREATE_PROMPT = RefinePrompt(DEFAULT_REFINE_TASK_CREATE_TMPL)
 
 
 #############################################
