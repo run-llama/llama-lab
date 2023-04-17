@@ -64,3 +64,13 @@ Enter what you would like AutoLlama to do:
 Summarize the financial news from the past week.
 
 ```
+
+## Ecosystem
+
+Llama Lab is part of the broader Llama ecosystem.
+- [LlamaIndex](https://github.com/jerryjliu/llama_index)
+- [LlamaHub](https://llamahub.ai/) ([repo](https://github.com/emptycrown/llama-hub))
+
+Community:
+- [Twitter](https://twitter.com/gpt_index)
+- [Discord](https://t.co/3ktq3zzYII)
