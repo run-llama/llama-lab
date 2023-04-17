@@ -10,7 +10,7 @@ Here's an overview of some of the amazing projects we're exploring:
 - llama_agi (a [babyagi](https://github.com/yoheinakajima/babyagi) inspired project to create/plan/and solve tasks)
 - auto_llama (an [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT) inspired project to search/download/query the Internet to solve user-specified tasks).
 
-Each folder is a stand-alone project. Each project provides a README on how it can be used.
+Each folder is a stand-alone project. See below for a description of each project along with usage examples.
 
 **Contributing**: We're very open to contributions! This can include the following:
 - Extending an existing project
