@@ -1,8 +1,22 @@
 # 🦙🧪  Llama Lab 🧬🦙
 
-Llama Lab is dedicated to hosting cutting-edge project demonstrations, backed by the [LlamaIndex](https://github.com/jerryjliu/llama_index) library!
+Llama Lab is a repo dedicated to building cutting-edge projects using [LlamaIndex](https://github.com/jerryjliu/llama_index). 
 
-Each folder is organized into stand-alone examples that showcase how LlamaIndex can be used in different ways.
+LlamaIndex is an interface for LLM data augmentation. It provides easy-to-use and flexible tools to index
+various types of data. At its core, it can be used to index a knowledge corpus. But it can also be used
+to index tasks, and provide memory-like capabilities for any outer agent abstractions.
+
+Here's an overview of some of the amazing projects we're exploring:
+- llama_agi (a [babyagi](https://github.com/yoheinakajima/babyagi) inspired project to create/plan/and solve tasks)
+- auto_llama (an [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT) inspired project to search/download/query the Internet to solve user-specified tasks).
+
+Each folder is a stand-alone project. See below for a description of each project along with usage examples.
+
+**Contributing**: We're very open to contributions! This can include the following:
+- Extending an existing project
+- Create a new Llama Lab project
+- Modifying capabilities in the core [LlamaIndex](https://github.com/jerryjliu/llama_index) repo in order to support Llama Lab projects.
+
 
 ## Current Labs
 
