@@ -1,0 +1,5 @@
+openai
+llama_index
+duckduckgo-search
+langchain
+pydantic

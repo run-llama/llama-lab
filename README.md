@@ -49,3 +49,18 @@ options:
                         The overall objective for the system. Default='Solve World Hunger'
   --sleep SLEEP         Sleep time (in seconds) between each task loop. Default=2
 ```
+### auto_llama
+
+Inspired by [autogpt](https://github.com/Significant-Gravitas/Auto-GPT). This implement its own Agent system similar to AutoGPT. 
+Given a user query, this system has the capability to search the web and download web pages, before analyzing the combined data and compiling a final answer to the user's prompt.
+
+Example usage:
+
+```bash
+cd auto_llama
+pip install -r requirements.txt
+python -m auto_llama
+Enter what you would like AutoLlama to do:
+Summarize the financial news from the past week.
+
+```
