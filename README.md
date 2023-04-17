@@ -16,7 +16,10 @@ This will run in a loop until the task list is empty (or maybe you run out of Op
 
 Example Usage:
 
-`python ./run_llama_agi.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2`
+```python
+cd llama_agi
+python ./run_llama_agi.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2
+```
 
 ```bash
 python ./run_llama_agi.py -h
