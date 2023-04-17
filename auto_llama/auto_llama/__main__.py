@@ -11,10 +11,9 @@ import logging
 def main():
     logger = logging.getLogger()
     logger.level = logging.WARN
-    # Enter your OpenAI API key here:
-
-    import os
-    os.environ["OPENAI_API_KEY"] = 'YOUR OPENAI API KEY'
+    # # Enter your OpenAI API key here:
+    # import os
+    # os.environ["OPENAI_API_KEY"] = 'YOUR OPENAI API KEY'
 
     openaichat = ChatOpenAI(
         model_name="gpt-4",
