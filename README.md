@@ -8,7 +8,7 @@ Each folder is organized into stand-alone examples that showcase how LlamaIndex 
 
 ### llama_agi
 
-A clone of [babyagi](https://github.com/yoheinakajima/babyagi), using LlamaIndex as a task manager and LangChain as a task executor.
+Inspired from [babyagi](https://github.com/yoheinakajima/babyagi), using LlamaIndex as a task manager and LangChain as a task executor.
 
 The current version of this folder will start an with an overall objective ("solve world hunger" by default), and create/prioritize the tasks needed to achieve that objective. LlamaIndex is used to create and prioritize tasks, while LangChain is used to guess the "result" of completing each action.
 
