@@ -57,7 +57,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="Llama AGI", description="A baby-agi/auto-gpt inspired application, powered by Llama Index!")
     parser.add_argument("-it", "--initial-task", default="Create a list of tasks", help="The initial task for the system to carry out. Default='Create a list of tasks'")
     parser.add_argument("-o", "--objective", default="Solve world hunger", help="The overall objective for the system. Default='Solve world hunger'")
-    parser.add_argument('--sleep', default=2, help="Sleep time (in seconds) between each task loop. Default=2")
+    parser.add_argument('--sleep', default=2, help="Sleep time (in seconds) between each task loop. Default=2", type=int)
+
     args = parser.parse_args()
 
     run_llama_agi(args.objective, args.initial_task, args.sleep)
