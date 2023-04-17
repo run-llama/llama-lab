@@ -34,7 +34,6 @@ LC_SUFFIX = (
     "Using your current objective, your previously completed tasks, and your available tools,"
     "Complete the current task.\n"
     "Begin!\n"
-    # "{execution_history}"
     "Task: {task}\n"
     "Thought: {agent_scratchpad}"
 )
@@ -76,7 +75,6 @@ DEFAULT_REFINE_TASK_CREATE_TMPL = (
     "---------------------\n"
     "{context_msg}"
     "\n---------------------\n"
-    "And here is a summary of some past"
     "Currently, you have created the following new tasks: {existing_answer}"
     "Given the current objective, the current incomplete tasks, list of newly created tasks, and the latest completed task, "
     "add new tasks to be completed that do not overlap with incomplete tasks. "
