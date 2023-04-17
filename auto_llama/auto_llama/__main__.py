@@ -14,7 +14,7 @@ def main():
     # Enter your OpenAI API key here:
 
     import os
-    os.environ["OPENAI_API_KEY"] = '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'
+    os.environ["OPENAI_API_KEY"] = 'YOUR OPENAI API KEY'
 
     openaichat = ChatOpenAI(
         model_name="gpt-4",
