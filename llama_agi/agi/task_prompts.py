@@ -1,11 +1,3 @@
-from langchain.chains.prompt_selector import ConditionalPromptSelector, is_chat_model
-from langchain.prompts.chat import (
-    AIMessagePromptTemplate,
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate
-)
-
 #############################################
 ##### AGI Prefix #####
 #############################################
@@ -73,7 +65,7 @@ DEFAULT_TASK_CREATE_TMPL = (
     "create new tasks to be completed that do not overlap with incomplete tasks. "
     "Return the tasks as an array."
 )
-#TASK_CREATE_PROMPT = QuestionAnswerPrompt(DEFAULT_TASK_CREATE_TMPL)
+# TASK_CREATE_PROMPT = QuestionAnswerPrompt(DEFAULT_TASK_CREATE_TMPL)
 
 DEFAULT_REFINE_TASK_CREATE_TMPL = (
     f"{PREFIX}"
@@ -88,7 +80,7 @@ DEFAULT_REFINE_TASK_CREATE_TMPL = (
     "add new tasks to be completed that do not overlap with incomplete tasks. "
     "Return the tasks as an array. If you have no more tasks to add, repeat the existing list of new tasks."
 )
-#REFINE_TASK_CREATE_PROMPT = RefinePrompt(DEFAULT_REFINE_TASK_CREATE_TMPL)
+# REFINE_TASK_CREATE_PROMPT = RefinePrompt(DEFAULT_REFINE_TASK_CREATE_TMPL)
 
 
 #############################################
