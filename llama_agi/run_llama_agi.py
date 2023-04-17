@@ -8,10 +8,6 @@ from agi.ExecutionAgent import SimpleExecutionAgent, ToolExecutionAgent
 from agi.TaskManager import TaskManager
 from agi.utils import log_current_status
 
-# disable llama-index logs
-logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
-
 
 def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
     task_manager = TaskManager([initial_task])
@@ -41,7 +37,6 @@ def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
 
         # Execute current task
         result = tool_execution_agent.execute_task(
-
             objective, cur_task, completed_tasks_summary
         )
 
