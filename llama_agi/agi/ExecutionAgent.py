@@ -1,8 +1,10 @@
 from langchain.agents import AgentExecutor, ZeroShotAgent, load_tools
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
+from langchain.llms import OpenAI, BaseLLM
+from langchain.chat_models.base import BaseChatModel
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from typing import Optional, Union
 
 from agi.task_prompts import LC_EXECUTION_PROMPT, LC_PREFIX, LC_SUFFIX
 from agi.tools.NoteTakingTools import record_note, search_notes
@@ -10,7 +12,11 @@ from agi.tools.WebpageSearchTool import search_webpage
 
 
 class BaseExecutionAgent:
-    def __init__(self, llm=None, model_name="text-davinci-003") -> None:
+    def __init__(
+        self,
+        llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
+        model_name: str = "text-davinci-003",
+    ) -> None:
         if llm:
             self._llm = llm
         elif model_name == "text-davinci-003":
@@ -25,7 +31,11 @@ class BaseExecutionAgent:
 
 
 class SimpleExecutionAgent(BaseExecutionAgent):
-    def __init__(self, llm=None, model_name="text-davinci-003"):
+    def __init__(
+        self,
+        llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
+        model_name: str = "text-davinci-003",
+    ) -> None:
         super().__init__(llm=llm, model_name=model_name)
         self._prompt_template = PromptTemplate(
             template=LC_EXECUTION_PROMPT,
@@ -45,7 +55,11 @@ class SimpleExecutionAgent(BaseExecutionAgent):
 
 
 class ToolExecutionAgent(BaseExecutionAgent):
-    def __init__(self, llm=None, model_name="text-davinci-003"):
+    def __init__(
+        self,
+        llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
+        model_name: str = "text-davinci-003",
+    ) -> None:
         super().__init__(llm=llm, model_name=model_name)
         # use some default langchain tools
         self._tools = load_tools(["google-search-results-json"])

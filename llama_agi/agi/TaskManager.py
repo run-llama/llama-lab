@@ -17,7 +17,7 @@ from agi.task_prompts import (
 class TaskManager:
     def __init__(self, tasks: List[str]) -> None:
         self.current_tasks = [Document(x) for x in tasks]
-        self.completed_tasks = []
+        self.completed_tasks: List[Document] = []
         self.current_tasks_index = initialize_task_list_index(
             self.current_tasks, index_path="current_tasks_index.json"
         )
@@ -27,14 +27,14 @@ class TaskManager:
 
     def _get_task_create_templates(
         self, prev_task: str, prev_result: str
-    ) -> Tuple[str, str]:
+    ) -> Tuple[QuestionAnswerPrompt, RefinePrompt]:
         text_qa_template = DEFAULT_TASK_CREATE_TMPL.format(
             prev_result=prev_result,
             prev_task=prev_task,
             query_str="{query_str}",
             context_str="{context_str}",
         )
-        text_qa_template = QuestionAnswerPrompt(text_qa_template)
+        llama_text_qa_template = QuestionAnswerPrompt(text_qa_template)
 
         refine_template = DEFAULT_REFINE_TASK_CREATE_TMPL.format(
             prev_result=prev_result,
@@ -43,11 +43,13 @@ class TaskManager:
             context_msg="{context_msg}",
             existing_answer="{existing_answer}",
         )
-        refine_template = RefinePrompt(refine_template)
+        llama_refine_template = RefinePrompt(refine_template)
 
-        return (text_qa_template, refine_template)
+        return (llama_text_qa_template, llama_refine_template)
 
-    def _get_task_prioritize_templates(self) -> Tuple[str, str]:
+    def _get_task_prioritize_templates(
+        self,
+    ) -> Tuple[QuestionAnswerPrompt, RefinePrompt]:
         return (
             QuestionAnswerPrompt(DEFAULT_TASK_PRIORITIZE_TMPL),
             RefinePrompt(DEFAULT_REFINE_TASK_PRIORITIZE_TMPL),
@@ -91,7 +93,7 @@ class TaskManager:
         try:
             new_tasks = json.loads(str(new_tasks))
             new_tasks = [x.strip() for x in new_tasks if len(x.strip()) > 10]
-        except:
+        except Exception:
             new_tasks = str(new_tasks).split("\n")
             new_tasks = [
                 re.sub(r"^[0-9]+\.", "", x).strip()

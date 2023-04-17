@@ -13,7 +13,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.CRITICAL)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
-def run_llama_agi(objective, initial_task, sleep_time):
+def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
     task_manager = TaskManager([initial_task])
     simple_execution_agent = SimpleExecutionAgent()
     tool_execution_agent = ToolExecutionAgent()
@@ -21,10 +21,10 @@ def run_llama_agi(objective, initial_task, sleep_time):
     # get initial list of tasks
     initial_completed_tasks_summary = task_manager.get_completed_tasks_summary()
     initial_task_prompt = initial_task + "\nReturn the list as an array."
-    initial_task_list = simple_execution_agent.execute_task(
+    initial_task_list_str = simple_execution_agent.execute_task(
         objective, initial_task_prompt, initial_completed_tasks_summary
     )
-    initial_task_list = json.loads(initial_task_list)
+    initial_task_list = json.loads(initial_task_list_str)
 
     # add tasks to the task manager
     task_manager.add_new_tasks(initial_task_list)
@@ -41,6 +41,7 @@ def run_llama_agi(objective, initial_task, sleep_time):
 
         # Execute current task
         result = tool_execution_agent.execute_task(
+
             objective, cur_task, completed_tasks_summary
         )
 
@@ -85,7 +86,9 @@ if __name__ == "__main__":
         "--sleep",
         default=2,
         help="Sleep time (in seconds) between each task loop. Default=2",
+        type=int,
     )
+
     args = parser.parse_args()
 
     run_llama_agi(args.objective, args.initial_task, args.sleep)
