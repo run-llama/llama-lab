@@ -1,0 +1,30 @@
+.DS_Store
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+bin/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+etc/
+include/
+lib/
+lib64/
+parts/
+sdist/
+share/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
