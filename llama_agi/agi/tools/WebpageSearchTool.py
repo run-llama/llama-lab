@@ -6,7 +6,7 @@ from agi.utils import initialize_search_index
 BeautifulSoupWebReader = download_loader("BeautifulSoupWebReader")
 
 
-@tool
+@tool("Search Webpage")
 def search_webpage(prompt: str) -> str:
     """Useful for searching a specific webpage. The input to the tool should be URL and query, separated by a newline."""
     loader = BeautifulSoupWebReader()
