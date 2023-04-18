@@ -1,20 +1,23 @@
+import logging
+import sys
 import argparse
 import json
 import time
 
-from agi.ExecutionAgent import SimpleExecutionAgent
+from agi.ExecutionAgent import SimpleExecutionAgent, ToolExecutionAgent
 from agi.TaskManager import TaskManager
 from agi.utils import log_current_status
 
 
 def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
     task_manager = TaskManager([initial_task])
-    execution_agent = SimpleExecutionAgent()
+    simple_execution_agent = SimpleExecutionAgent()
+    tool_execution_agent = ToolExecutionAgent()
 
     # get initial list of tasks
     initial_completed_tasks_summary = task_manager.get_completed_tasks_summary()
     initial_task_prompt = initial_task + "\nReturn the list as an array."
-    initial_task_list_str = execution_agent.execute_task(
+    initial_task_list_str = simple_execution_agent.execute_task(
         objective, initial_task_prompt, initial_completed_tasks_summary
     )
     initial_task_list = json.loads(initial_task_list_str)
@@ -33,7 +36,7 @@ def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
         completed_tasks_summary = task_manager.get_completed_tasks_summary()
 
         # Execute current task
-        result = execution_agent.execute_task(
+        result = tool_execution_agent.execute_task(
             objective, cur_task, completed_tasks_summary
         )
 

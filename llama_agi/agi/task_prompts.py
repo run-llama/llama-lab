@@ -34,7 +34,7 @@ LC_SUFFIX = (
     "Using your current objective, your previously completed tasks, and your available tools,"
     "Complete the current task.\n"
     "Begin!\n"
-    "Task: {input}\n"
+    "Task: {task}\n"
     "Thought: {agent_scratchpad}"
 )
 

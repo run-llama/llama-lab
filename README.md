@@ -7,7 +7,7 @@ various types of data. At its core, it can be used to index a knowledge corpus. 
 to index tasks, and provide memory-like capabilities for any outer agent abstractions.
 
 Here's an overview of some of the amazing projects we're exploring:
-- llama_agi (a [babyagi](https://github.com/yoheinakajima/babyagi) inspired project to create/plan/and solve tasks)
+- llama_agi (a [babyagi](https://github.com/yoheinakajima/babyagi) and [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT) inspired project to create/plan/and solve tasks)
 - auto_llama (an [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT) inspired project to search/download/query the Internet to solve user-specified tasks).
 
 Each folder is a stand-alone project. See below for a description of each project along with usage examples.
@@ -22,9 +22,11 @@ Each folder is a stand-alone project. See below for a description of each projec
 
 ### llama_agi
 
-Inspired from [babyagi](https://github.com/yoheinakajima/babyagi), using LlamaIndex as a task manager and LangChain as a task executor.
+Inspired from [babyagi](https://github.com/yoheinakajima/babyagi) and [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT), using LlamaIndex as a task manager and LangChain as a task executor.
 
 The current version of this folder will start an with an overall objective ("solve world hunger" by default), and create/prioritize the tasks needed to achieve that objective. LlamaIndex is used to create and prioritize tasks, while LangChain is used to guess the "result" of completing each action.
+
+Using LangChain and LlamaIndex, llama_agi has access to the following tools: google-search, webpage reading, and note-taking. Note that the google-search tool requires [a Google API key and a CSE ID](https://cse.google.com/cse/).
 
 This will run in a loop until the task list is empty (or maybe you run out of OpenAI credits 😉).
 
@@ -32,6 +34,9 @@ Example Usage:
 
 ```python
 cd llama_agi
+export OPENAI_API_KEY="key"
+export GOOGLE_API_KEY="key"
+export GOOGLE_CSE_ID="id"
 python ./run_llama_agi.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2
 ```
 
