@@ -5,7 +5,7 @@ from agi.utils import initialize_search_index
 note_index = initialize_search_index([])
 
 
-@tool
+@tool("Record Note")
 def record_note(note: str) -> str:
     """Useful for when you need to record a note or reminder for yourself to reference in the future."""
     global note_index
@@ -13,7 +13,7 @@ def record_note(note: str) -> str:
     return "Note successfully recorded."
 
 
-@tool
+@tool("Search Notes")
 def search_notes(query_str: str) -> str:
     """Useful for searching through notes that you previously recorded."""
     global note_index
