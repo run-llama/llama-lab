@@ -24,7 +24,7 @@ Each folder is a stand-alone project. See below for a description of each projec
 
 Inspired from [babyagi](https://github.com/yoheinakajima/babyagi) and [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT), using LlamaIndex as a task manager and LangChain as a task executor.
 
-The current version of this folder will start an with an overall objective ("solve world hunger" by default), and create/prioritize the tasks needed to achieve that objective. LlamaIndex is used to create and prioritize tasks, while LangChain is used to guess the "result" of completing each action.
+The current version of this folder will start with an overall objective ("solve world hunger" by default), and create/prioritize the tasks needed to achieve that objective. LlamaIndex is used to create and prioritize tasks, while LangChain is used to guess the "result" of completing each action.
 
 Using LangChain and LlamaIndex, llama_agi has access to the following tools: google-search, webpage reading, and note-taking. Note that the google-search tool requires [a Google API key and a CSE ID](https://cse.google.com/cse/).
 
