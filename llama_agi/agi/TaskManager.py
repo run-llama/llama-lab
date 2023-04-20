@@ -59,10 +59,10 @@ class TaskManager:
         # Try to parse lists with json, fallback to regex
         new_tasks: List[str] = []
         try:
-            new_tasks = json.loads(str(new_tasks))
+            new_tasks = json.loads(task_list_str)
             new_tasks = [x.strip() for x in new_tasks if len(x.strip()) > 10]
         except Exception:
-            new_tasks = str(new_tasks).split("\n")
+            new_tasks = str(task_list_str).split("\n")
             new_tasks = [
                 re.sub(r"^[0-9]+\.", "", x).strip()
                 for x in str(new_tasks)
