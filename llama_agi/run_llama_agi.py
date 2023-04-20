@@ -20,7 +20,7 @@ def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
     initial_task_list_str = simple_execution_agent.execute_task(
         objective, initial_task_prompt, initial_completed_tasks_summary
     )
-    initial_task_list = json.loads(initial_task_list_str)
+    initial_task_list = task_manager.parse_task_list(initial_task_list_str)
 
     # add tasks to the task manager
     task_manager.add_new_tasks(initial_task_list)

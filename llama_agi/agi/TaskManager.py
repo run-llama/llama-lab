@@ -55,6 +55,21 @@ class TaskManager:
             RefinePrompt(DEFAULT_REFINE_TASK_PRIORITIZE_TMPL),
         )
 
+    def parse_task_list(self, task_list_str: str) -> List[str]:
+        # Try to parse lists with json, fallback to regex
+        new_tasks: List[str] = []
+        try:
+            new_tasks = json.loads(str(new_tasks))
+            new_tasks = [x.strip() for x in new_tasks if len(x.strip()) > 10]
+        except Exception:
+            new_tasks = str(new_tasks).split("\n")
+            new_tasks = [
+                re.sub(r"^[0-9]+\.", "", x).strip()
+                for x in str(new_tasks)
+                if len(x.strip()) > 10 and x[0].isnumeric()
+            ]
+        return new_tasks
+
     def get_completed_tasks_summary(self) -> str:
         if len(self.completed_tasks) == 0:
             return NO_COMPLETED_TASKS_SUMMARY
@@ -85,21 +100,12 @@ class TaskManager:
         (text_qa_template, refine_template) = self._get_task_create_templates(
             prev_task, prev_result
         )
-        new_tasks = self.completed_tasks_index.query(
+        task_list_response = self.completed_tasks_index.query(
             objective,
             text_qa_template=text_qa_template,
             refine_template=refine_template,
         )
-        try:
-            new_tasks = json.loads(str(new_tasks))
-            new_tasks = [x.strip() for x in new_tasks if len(x.strip()) > 10]
-        except Exception:
-            new_tasks = str(new_tasks).split("\n")
-            new_tasks = [
-                re.sub(r"^[0-9]+\.", "", x).strip()
-                for x in str(new_tasks)
-                if len(x.strip()) > 10 and x[0].isnumeric()
-            ]
+        new_tasks = self.parse_task_list(str(task_list_response))
         self.add_new_tasks(new_tasks)
 
     def get_next_task(self) -> str:
