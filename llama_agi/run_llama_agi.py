@@ -28,12 +28,10 @@ def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
     # prioritize initial tasks
     task_manager.prioritize_tasks(objective)
 
+    completed_tasks_summary = initial_completed_tasks_summary
     while True:
         # Get the next task
         cur_task = task_manager.get_next_task()
-
-        # Summarize completed tasks
-        completed_tasks_summary = task_manager.get_completed_tasks_summary()
 
         # Execute current task
         result = tool_execution_agent.execute_task(
@@ -45,6 +43,9 @@ def run_llama_agi(objective: str, initial_task: str, sleep_time: int) -> None:
 
         # generate new task(s), if needed
         task_manager.generate_new_tasks(objective, cur_task, result)
+
+        # Summarize completed tasks
+        completed_tasks_summary = task_manager.get_completed_tasks_summary()
 
         # log state of AGI to terminal
         log_current_status(
