@@ -84,6 +84,14 @@ cd convo_agents
 jupyter notebook ConvoAgents.ipynb
 ```
 
+### External projects
+
+We also provide references to other project repos using LlamaIndex in novel ways.
+
+These repos are hosted as submodules in our `external` folder.
+
+Check it out here: https://github.com/run-llama/llama-lab/tree/main/external
+
 ## Ecosystem
 
 Llama Lab is part of the broader Llama ecosystem.
