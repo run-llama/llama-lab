@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from string import Formatter
 
 from langchain.agents.tools import Tool
@@ -43,7 +43,7 @@ class SimpleExecutionAgent(BaseExecutionAgent):
         )
         self._execution_chain = LLMChain(llm=self._llm, prompt=self._prompt_template)
 
-    def execute_task(self, **prompt_kwargs: Any) -> str:
+    def execute_task(self, **prompt_kwargs: Any) -> Dict[str, str]:
         """Execute a task."""
         result = self._execution_chain.predict(**prompt_kwargs)
-        return result
+        return {"output": result}

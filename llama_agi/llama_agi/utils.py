@@ -19,14 +19,17 @@ def initialize_search_index(
 
 
 def log_current_status(
-    cur_task: str, result: str, completed_tasks_summary: str, task_list: List[Document]
-) -> None:
+    cur_task: str, result: str, completed_tasks_summary: str, task_list: List[Document], return_str = False
+) -> Optional[str]:
     status_string = f"""
-    ==================================
+    __________________________________
     Completed Tasks Summary: {completed_tasks_summary.strip()}
     Current Task: {cur_task.strip()}
     Result: {result.strip()}
     Task List: {", ".join([x.get_text().strip() for x in task_list])}
-    ==================================
+    __________________________________
     """
-    print(status_string, flush=True)
+    if return_str:
+        return status_string
+    else:
+        print(status_string, flush=True)

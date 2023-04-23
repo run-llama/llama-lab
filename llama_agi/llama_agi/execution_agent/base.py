@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Any, List, Optional, Union, TypedDict, NotRequired
+from typing import Any, Dict, List, Optional, Union, TypedDict, NotRequired
 
 from langchain.agents.tools import Tool
 from langchain.llms import OpenAI, BaseLLM
@@ -37,5 +37,5 @@ class BaseExecutionAgent:
         self.tools = tools if tools else []
 
     @abstractmethod
-    def execute_task(self, **prompt_kwargs: Any) -> str:
+    def execute_task(self, **prompt_kwargs: Any) -> Dict[str, str]:
         """Execute a task."""

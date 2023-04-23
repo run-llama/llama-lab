@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from string import Formatter
 
 from langchain.agents import AgentExecutor, ZeroShotAgent
@@ -47,10 +47,10 @@ class ToolExecutionAgent(BaseExecutionAgent):
             llm_chain=self._llm_chain, tools=self.tools, verbose=True
         )
         self._execution_chain = AgentExecutor.from_agent_and_tools(
-            agent=self._agent, tools=self.tools, verbose=True
+            agent=self._agent, tools=self.tools, verbose=True, return_intermediate_steps=True
         )
 
-    def execute_task(self, **prompt_kwargs: Any) -> str:
+    def execute_task(self, **prompt_kwargs: Any) -> Dict[str, str]:
         """Execute a task, using tools."""
-        result = self._execution_chain.run(**prompt_kwargs)
+        result = self._execution_chain(prompt_kwargs)
         return result
