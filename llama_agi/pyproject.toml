@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "llama_agi"
+version = "0.1.0"
+description = "Building AGI loops using LlamaIndex and Langchain"
+authors = []
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/run-llama/llama-lab/tree/main/llama_agi"
+include = [
+    "LICENSE",
+]
+keywords = ["LLM", "LlamaIndex", "Langchain", "AGI"]
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+langchain = ">=0.0.141"
+llama-index = ">=0.5.16"
+streamlit = ">=1.21.0"
+
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.0.249"
+black = "^23.1.0"
+
+[tool.poetry.group.typing.dependencies]
+mypy = "^0.991"
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^67.6.1"
+
+[tool.mypy]
+ignore_missing_imports = "True"
+disallow_untyped_defs = "True"
+exclude = ["notebooks", "build", "examples"]
+
+[tool.ruff]
+exclude = [
+    ".venv",
+    "__pycache__",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".ruff_cache",
+    "examples",
+    "notebooks",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,6 +1,6 @@
 from langchain.agents import tool
 from llama_index import Document
-from agi.utils import initialize_search_index
+from llama_agi.utils import initialize_search_index
 
 note_index = initialize_search_index([])
 
