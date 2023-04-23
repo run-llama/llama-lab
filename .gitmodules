@@ -1,0 +1,3 @@
+[submodule "external/INSIGHT"]
+	path = external/INSIGHT
+	url = https://github.com/oneil512/INSIGHT.git
