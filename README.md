@@ -70,6 +70,20 @@ Summarize the financial news from the past week.
 
 ```
 
+### Conversational Agents
+
+This is a fun conversational simulator between different agents. You can choose
+to provide some details about the context/setting, and watch as the conversation
+between different agents evolves.
+
+A sample notebook is provided in the `convo_agents` folder. Usage:
+
+```bash
+cd convo_agents
+
+jupyter notebook ConvoAgents.ipynb
+```
+
 ## Ecosystem
 
 Llama Lab is part of the broader Llama ecosystem.
