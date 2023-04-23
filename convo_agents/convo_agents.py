@@ -43,7 +43,7 @@ DEFAULT_PROMPT = QuestionAnswerPrompt(DEFAULT_PROMPT_TMPL)
 
 
 class ConvoAgent(BaseModel):
-    
+    """Basic abstraction for a conversation agent."""
     name: str
     st_memory: deque
     lt_memory: BaseGPTIndex
@@ -120,36 +120,3 @@ class ConvoAgent(BaseModel):
             response_mode="compact"
         )    
         return str(response)
-    
-
-def run_conversation_loop(
-    alice: ConvoAgent, 
-    bob: ConvoAgent, 
-    alice_starter: Optional[str] = None, 
-    bob_starter: Optional[str] = None
-) -> None:
-    """Run conversation loop."""
-    alice_starter = alice_starter or "Hi, my name is Alice!"
-    bob_starter = bob_starter or "Hi, my name is Bob!" 
-
-    alice.add_message(alice_starter, "Alice")
-    bob.add_message(alice_starter, "Alice")
-
-    alice.add_message(bob_starter, "Bob")
-    bob.add_message(bob_starter, "Bob")
-    
-    # run conversation loop
-    num_iterations = 100
-    current_user = "Alice"
-    for _ in range(num_iterations):
-
-        agent = alice if current_user == "Alice" else bob
-        new_message = agent.generate_message()
-
-        message_to_print = format_text(new_message, current_user)
-        print(message_to_print)
-
-        alice.add_message(new_message, current_user)
-        bob.add_message(new_message, current_user)
-
-        current_user = "Alice" if current_user == "Bob" else "Bob"
