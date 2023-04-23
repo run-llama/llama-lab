@@ -112,7 +112,7 @@ def download_web(url: str, doc_name: str, service_context: ServiceContext):
         os.mkdir("data")
     index.save_to_disk("data/" + doc_name + ".json")
     summary = index.query(
-        "Summarize the contents of this web page.", response_mode="tree_summarize"
+        "Summarize the contents of this web page.", response_mode="tree_summarize", use_async=True
     )
     return summary.response
 
