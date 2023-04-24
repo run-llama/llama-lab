@@ -27,6 +27,7 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
         initial_task: str,
         sleep_time: int,
         initial_task_list: Optional[List[str]] = None,
+        max_iterations: Optional[int] = None
     ) -> None:
         logs_col, state_col = st.columns(2)
 
@@ -77,47 +78,59 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
         if state_str:
             st_state.markdown(state_str.replace("\n", "\n\n"))
 
+        iteration = 0
+        paused = False
         while True:
-            # Get the next task
-            cur_task = self.task_manager.get_next_task()
+            if paused and st.button(f"Continue for {max_iterations} more steps?"):
+                paused = False
+                st.success("Continuing..")
+            else:
+                iteration += 1
 
-            # Execute current task
-            result_dict = self.execution_agent.execute_task(
-                objective=objective,
-                cur_task=cur_task,
-                completed_tasks_summary=completed_tasks_summary,
-            )
-            result = result_dict['output']
-            
-            # update logs 
-            log = make_intermediate_steps_pretty(json.dumps(result_dict['intermediate_steps'])) + [result]
-            logs.append(log)
-            st_logs.write(log)
+                # Get the next task
+                cur_task = self.task_manager.get_next_task()
 
-            # store the task and result as completed
-            self.task_manager.add_completed_task(cur_task, result)
+                # Execute current task
+                result_dict = self.execution_agent.execute_task(
+                    objective=objective,
+                    cur_task=cur_task,
+                    completed_tasks_summary=completed_tasks_summary,
+                )
+                result = result_dict['output']
+                
+                # update logs 
+                log = make_intermediate_steps_pretty(json.dumps(result_dict['intermediate_steps'])) + [result]
+                logs.append(log)
+                st_logs.write(log)
 
-            # generate new task(s), if needed
-            self.task_manager.generate_new_tasks(objective, cur_task, result)
+                # store the task and result as completed
+                self.task_manager.add_completed_task(cur_task, result)
 
-            # Summarize completed tasks
-            completed_tasks_summary = self.task_manager.get_completed_tasks_summary()
+                # generate new task(s), if needed
+                self.task_manager.generate_new_tasks(objective, cur_task, result)
 
-            # log state of AGI to streamlit
-            state_str = log_current_status(
-                cur_task,
-                result,
-                completed_tasks_summary,
-                self.task_manager.current_tasks,
-                return_str=True
-            )
-            if state_str is not None:
-                st_state.markdown(state_str.replace("\n", "\n\n"))
+                # Summarize completed tasks
+                completed_tasks_summary = self.task_manager.get_completed_tasks_summary()
 
-            # Quit the loop?
-            if len(self.task_manager.current_tasks) == 0:
-                print("Out of tasks! Objective Accomplished?")
-                break
+                # log state of AGI to streamlit
+                state_str = log_current_status(
+                    cur_task,
+                    result,
+                    completed_tasks_summary,
+                    self.task_manager.current_tasks,
+                    return_str=True
+                )
+                if state_str is not None:
+                    st_state.markdown(state_str.replace("\n", "\n\n"))
 
-            # wait a bit to let you read what's happening
-            time.sleep(sleep_time)
+                # Quit the loop?
+                if len(self.task_manager.current_tasks) == 0:
+                    st.success("Out of tasks! Objective Accomplished?")
+                    break
+
+                if max_iterations is not None and iteration % max_iterations == 0:
+                    st.warning("Reached max iterations, pausing!")
+                    paused = True
+
+                # wait a bit to let you read what's happening
+                time.sleep(sleep_time)
