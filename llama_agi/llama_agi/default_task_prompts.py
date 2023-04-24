@@ -14,19 +14,9 @@ NO_COMPLETED_TASKS_SUMMARY = "You haven't completed any tasks yet."
 
 
 #############################################
-##### Langchain - Execution Agent (Unused Currently) #####
+##### Langchain - Execution Agent #####
 #############################################
 LC_PREFIX = PREFIX + "You have access to the following tools:"
-
-LC_FORMAT_INSTRUCTIONS = """Use the following format:
-Task: the current task you must complete
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I have now completed the task
-Final Answer: the final answer to the original input task"""
 
 LC_SUFFIX = (
     "This is your current objective: {objective}\n"
@@ -34,7 +24,7 @@ LC_SUFFIX = (
     "Using your current objective, your previously completed tasks, and your available tools,"
     "Complete the current task.\n"
     "Begin!\n"
-    "Task: {task}\n"
+    "Task: {cur_task}\n"
     "Thought: {agent_scratchpad}"
 )
 

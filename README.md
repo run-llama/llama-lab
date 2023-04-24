@@ -33,11 +33,11 @@ This will run in a loop until the task list is empty (or maybe you run out of Op
 Example Usage:
 
 ```python
-cd llama_agi
+cd llama_agi/examples
 export OPENAI_API_KEY="key"
 export GOOGLE_API_KEY="key"
 export GOOGLE_CSE_ID="id"
-python ./run_llama_agi.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2
+python ./auto_runner_example.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2
 ```
 
 ```bash

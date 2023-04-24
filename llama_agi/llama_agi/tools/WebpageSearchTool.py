@@ -1,7 +1,7 @@
 from langchain.agents import tool
-from llama_index import download_loader
+from llama_index import download_loader, ServiceContext
 
-from agi.utils import initialize_search_index
+from llama_agi.utils import initialize_search_index
 
 BeautifulSoupWebReader = download_loader("BeautifulSoupWebReader")
 
@@ -18,7 +18,8 @@ def search_webpage(prompt: str) -> str:
 
     try:
         documents = loader.load_data(urls=[url])
-        index = initialize_search_index(documents, chunk_size_limit=512)
+        service_context = ServiceContext.from_defaults(chunk_size_limit=512)
+        index = initialize_search_index(documents, service_context=service_context)
         query_result = index.query(
             query_str, similarity_top_k=3, response_mode="compact"
         )
