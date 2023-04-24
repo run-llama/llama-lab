@@ -12,6 +12,26 @@ from llama_agi.default_task_prompts import LC_EXECUTION_PROMPT
 
 
 class SimpleExecutionAgent(BaseExecutionAgent):
+    """Simple Execution Agent
+
+    This agent uses an LLM to execute a basic action without tools.
+    The LlamaAgentPrompts.execution_prompt defines how this execution agent
+    behaves. 
+
+    Usually, this is used for simple tasks, like generating the initial list of tasks.
+    
+    The execution template kwargs are automatically extracted and expected to be 
+    specified in execute_task().
+    
+    Args:
+        llm (Union[BaseLLM, BaseChatModel]): The langchain LLM class to use.
+        model_name: (str): The name of the OpenAI model to use, if the LLM is 
+        not provided.
+        max_tokens: (int): The maximum number of tokens the LLM can generate.
+        prompts: (LlamaAgentPrompts): The prompt templates used during execution. 
+        The only prompt used byt the SimpleExecutionAgent is 
+        LlamaAgentPrompts.execution_prompt.
+    """
     def __init__(
         self,
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,

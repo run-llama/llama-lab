@@ -12,6 +12,16 @@ class LlamaTaskPrompts(TypedDict):
 
 
 class BaseTaskManager:
+    """Base Task Manager
+    
+    Args:
+        tasks (List[str]): The initial list of tasks to complete.
+        prompts: (LlamaTaskPrompts): The prompts to control the task creation 
+        and prioritization.
+        tasK_service_context (ServiceContext): The LlamaIndex service context to use 
+        for task creation and prioritization.
+
+    """
     def __init__(
         self,
         tasks: List[str],

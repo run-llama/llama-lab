@@ -17,6 +17,25 @@ from llama_agi.default_task_prompts import (
 
 
 class LlamaTaskManager(BaseTaskManager):
+    """Llama Task Manager
+    
+    This task manager uses LlamaIndex to create and prioritize tasks. Using
+    the LlamaTaskPrompts, the task manager will create tasks that work
+    towards achieving an overall objective.
+
+    New tasks are created based on the prev task+result, completed tasks summary,
+    and the overall objective.
+
+    Tasks are then prioritized using the overall objective and current list of tasks.
+
+    Args:
+        tasks (List[str]): The initial list of tasks to complete.
+        prompts: (LlamaTaskPrompts): The prompts to control the task creation 
+        and prioritization.
+        tasK_service_context (ServiceContext): The LlamaIndex service context to use 
+        for task creation and prioritization.
+
+    """
     def __init__(
         self,
         tasks: List[str],
