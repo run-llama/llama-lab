@@ -20,7 +20,7 @@ Each folder is a stand-alone project. See below for a description of each projec
 
 ## Current Labs
 
-### llama_agi
+### llama_agi (v0.1.0)
 
 Inspired from [babyagi](https://github.com/yoheinakajima/babyagi) and [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT), using LlamaIndex as a task manager and LangChain as a task executor.
 
@@ -30,30 +30,8 @@ Using LangChain and LlamaIndex, llama_agi has access to the following tools: goo
 
 This will run in a loop until the task list is empty (or maybe you run out of OpenAI credits 😉).
 
-Example Usage:
+For more info, see the README in the [llama_agi folder](./llama_agi/README.md) or the [pypi page](https://pypi.org/project/llama-agi/).
 
-```python
-cd llama_agi/examples
-export OPENAI_API_KEY="key"
-export GOOGLE_API_KEY="key"
-export GOOGLE_CSE_ID="id"
-python ./auto_runner_example.py --initial-task "Create a task list" --objective "Solve world hunger" --sleep 2
-```
-
-```bash
-python ./run_llama_agi.py -h
-usage: Llama AGI [-h] [-it INITIAL_TASK] [-o OBJECTIVE] [--sleep SLEEP]
-
-A baby-agi/auto-gpt inspired application, powered by Llama Index!
-
-options:
-  -h, --help            show this help message and exit
-  -it INITIAL_TASK, --initial-task INITIAL_TASK
-                        The initial task for the system to carry out. Default='Create a list of tasks'
-  -o OBJECTIVE, --objective OBJECTIVE
-                        The overall objective for the system. Default='Solve World Hunger'
-  --sleep SLEEP         Sleep time (in seconds) between each task loop. Default=2
-```
 ### auto_llama
 
 Inspired by [autogpt](https://github.com/Significant-Gravitas/Auto-GPT). This implement its own Agent system similar to AutoGPT. 
