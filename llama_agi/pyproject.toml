@@ -13,8 +13,8 @@ keywords = ["LLM", "LlamaIndex", "Langchain", "AGI"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-langchain = ">=0.0.141"
-llama-index = ">=0.5.16"
+langchain = "==0.0.141"
+llama-index = "==0.5.16"
 streamlit = ">=1.21.0"
 
 
