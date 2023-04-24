@@ -4,7 +4,13 @@ This python package allows you to quickly create Auto-GPT-like agents, using Lla
 
 ## Setup
 
-Currently, installation is only through installing from source:
+Install using pip:
+
+```bash
+pip install llama-agi
+```
+
+Or install from source:
 
 ```bash
 git clone https://github.com/run-llama/llama-lab.git
@@ -14,7 +20,7 @@ pip install -e .
 
 ## Example Usage
 
-The following shows an example of setting up the `AutAGIRunner`, which will continue completing tasks (nearly) indefinitely, trying to achieve it's initial objective of "Solve world hunger."
+The following shows an example of setting up the `AutoAGIRunner`, which will continue completing tasks (nearly) indefinitely, trying to achieve it's initial objective of "Solve world hunger."
 
 ```python
 from langchain.agents import load_tools
