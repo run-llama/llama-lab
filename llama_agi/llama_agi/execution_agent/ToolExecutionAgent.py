@@ -7,7 +7,6 @@ from langchain.chains import LLMChain
 from langchain.llms import BaseLLM
 from langchain.chat_models.base import BaseChatModel
 
-from llama_agi.default_task_prompts import LC_PREFIX, LC_SUFFIX
 from llama_agi.execution_agent.base import BaseExecutionAgent, LlamaAgentPrompts
 
 
@@ -42,7 +41,7 @@ class ToolExecutionAgent(BaseExecutionAgent):
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
         model_name: str = "text-davinci-003",
         max_tokens: int = 512,
-        prompts: Optional[LlamaAgentPrompts] = None,
+        prompts: LlamaAgentPrompts = LlamaAgentPrompts(),
         tools: Optional[List[Tool]] = None,
     ) -> None:
         super().__init__(
@@ -52,8 +51,8 @@ class ToolExecutionAgent(BaseExecutionAgent):
             prompts=prompts,
             tools=tools,
         )
-        self.agent_prefix = self.prompts.get("agent_prefix", LC_PREFIX)
-        self.agent_suffix = self.prompts.get("agent_suffix", LC_SUFFIX)
+        self.agent_prefix = self.prompts.agent_prefix
+        self.agent_suffix = self.prompts.agent_suffix
 
         # create the agent
         input_variables = [
@@ -63,8 +62,8 @@ class ToolExecutionAgent(BaseExecutionAgent):
         ]
         self._agent_prompt = ZeroShotAgent.create_prompt(
             self.tools,
-            prefix=LC_PREFIX,
-            suffix=LC_SUFFIX,
+            prefix=self.agent_prefix,
+            suffix=self.agent_suffix,
             input_variables=input_variables,
         )
         self._llm_chain = LLMChain(llm=self._llm, prompt=self._agent_prompt)

@@ -1,7 +1,7 @@
 import json
 import streamlit as st
 import time
-from typing import Dict, List
+from typing import List, Optional
 
 from llama_agi.runners.base import BaseAGIRunner
 from llama_agi.execution_agent.SimpleExecutionAgent import SimpleExecutionAgent
@@ -26,6 +26,7 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
         objective: str,
         initial_task: str,
         sleep_time: int,
+        initial_task_list: Optional[List[str]] = None,
     ) -> None:
         logs_col, state_col = st.columns(2)
 
@@ -41,27 +42,30 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
         st_state.write("No state yet!")
 
         # get initial list of tasks
-        initial_completed_tasks_summary = (
-            self.task_manager.get_completed_tasks_summary()
-        )
-        initial_task_prompt = initial_task + "\nReturn the list as an array."
+        if initial_task_list:
+            self.task_manager.add_new_tasks(initial_task_list)
+        else:
+            initial_completed_tasks_summary = (
+                self.task_manager.get_completed_tasks_summary()
+            )
+            initial_task_prompt = initial_task + "\nReturn the list as an array."
 
-        # create simple execution agent using current agent
-        simple_execution_agent = SimpleExecutionAgent(
-            llm=self.execution_agent._llm,
-            max_tokens=self.execution_agent.max_tokens,
-            prompts=self.execution_agent.prompts,
-        )
-        initial_task_list_result = simple_execution_agent.execute_task(
-            objective=objective,
-            task=initial_task_prompt,
-            completed_tasks_summary=initial_completed_tasks_summary,
-        )
+            # create simple execution agent using current agent
+            simple_execution_agent = SimpleExecutionAgent(
+                llm=self.execution_agent._llm,
+                max_tokens=self.execution_agent.max_tokens,
+                prompts=self.execution_agent.prompts,
+            )
+            initial_task_list_result = simple_execution_agent.execute_task(
+                objective=objective,
+                task=initial_task_prompt,
+                completed_tasks_summary=initial_completed_tasks_summary,
+            )
 
-        initial_task_list = self.task_manager.parse_task_list(initial_task_list_result['output'])
+            initial_task_list = self.task_manager.parse_task_list(initial_task_list_result['output'])
 
-        # add tasks to the task manager
-        self.task_manager.add_new_tasks(initial_task_list)
+            # add tasks to the task manager
+            self.task_manager.add_new_tasks(initial_task_list)
 
         # prioritize initial tasks
         self.task_manager.prioritize_tasks(objective)
@@ -69,7 +73,9 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
         completed_tasks_summary = initial_completed_tasks_summary
 
         # update streamlit state
-        st_state.markdown(log_current_status(initial_task, initial_task_list_result['output'], completed_tasks_summary, self.task_manager.current_tasks, return_str=True).replace("\n", "\n\n"))
+        state_str = log_current_status(initial_task, initial_task_list_result['output'], completed_tasks_summary, self.task_manager.current_tasks, return_str=True)
+        if state_str:
+            st_state.markdown(state_str.replace("\n", "\n\n"))
 
         while True:
             # Get the next task
@@ -105,7 +111,8 @@ class AutoStreamlitAGIRunner(BaseAGIRunner):
                 self.task_manager.current_tasks,
                 return_str=True
             )
-            st_state.markdown(state_str.replace("\n", "\n\n"))
+            if state_str is not None:
+                st_state.markdown(state_str.replace("\n", "\n\n"))
 
             # Quit the loop?
             if len(self.task_manager.current_tasks) == 0:

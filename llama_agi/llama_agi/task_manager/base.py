@@ -1,14 +1,23 @@
 from abc import abstractmethod
-from typing import List, Optional, NotRequired, TypedDict
+from dataclasses import dataclass
+from typing import List, Optional
 
 from llama_index import Document, ServiceContext
 
+from llama_agi.default_task_prompts import (
+    DEFAULT_TASK_PRIORITIZE_TMPL,
+    DEFAULT_REFINE_TASK_PRIORITIZE_TMPL,
+    DEFAULT_TASK_CREATE_TMPL,
+    DEFAULT_REFINE_TASK_CREATE_TMPL,
+)
 
-class LlamaTaskPrompts(TypedDict):
-    task_create_qa_template: NotRequired[str]
-    task_create_refine_template: NotRequired[str]
-    task_prioritize_qa_template: NotRequired[str]
-    task_prioritize_refine_template: NotRequired[str]
+
+@dataclass
+class LlamaTaskPrompts:
+    task_create_qa_template: str = DEFAULT_TASK_CREATE_TMPL
+    task_create_refine_template: str = DEFAULT_REFINE_TASK_CREATE_TMPL
+    task_prioritize_qa_template: str = DEFAULT_TASK_PRIORITIZE_TMPL
+    task_prioritize_refine_template: str = DEFAULT_REFINE_TASK_PRIORITIZE_TMPL
 
 
 class BaseTaskManager:
@@ -25,12 +34,12 @@ class BaseTaskManager:
     def __init__(
         self,
         tasks: List[str],
-        prompts: Optional[LlamaTaskPrompts] = None,
+        prompts: LlamaTaskPrompts = LlamaTaskPrompts(),
         task_service_context: Optional[ServiceContext] = None,
     ) -> None:
         self.current_tasks = [Document(x) for x in tasks]
         self.completed_tasks: List[Document] = []
-        self.prompts = prompts if prompts else {}
+        self.prompts = prompts
         self.task_service_context = task_service_context
 
     @abstractmethod

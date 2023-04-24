@@ -19,7 +19,7 @@ def initialize_search_index(
 
 
 def log_current_status(
-    cur_task: str, result: str, completed_tasks_summary: str, task_list: List[Document], return_str = False
+    cur_task: str, result: str, completed_tasks_summary: str, task_list: List[Document], return_str: bool = False
 ) -> Optional[str]:
     status_string = f"""
     __________________________________
@@ -33,3 +33,4 @@ def log_current_status(
         return status_string
     else:
         print(status_string, flush=True)
+        return None

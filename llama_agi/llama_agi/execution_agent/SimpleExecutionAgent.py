@@ -8,7 +8,6 @@ from langchain.chat_models.base import BaseChatModel
 from langchain.prompts import PromptTemplate
 
 from llama_agi.execution_agent.base import BaseExecutionAgent, LlamaAgentPrompts
-from llama_agi.default_task_prompts import LC_EXECUTION_PROMPT
 
 
 class SimpleExecutionAgent(BaseExecutionAgent):
@@ -37,7 +36,7 @@ class SimpleExecutionAgent(BaseExecutionAgent):
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
         model_name: str = "text-davinci-003",
         max_tokens: int = 512,
-        prompts: Optional[LlamaAgentPrompts] = None,
+        prompts: LlamaAgentPrompts = LlamaAgentPrompts(),
         tools: Optional[List[Tool]] = None,
     ) -> None:
         super().__init__(
@@ -48,10 +47,7 @@ class SimpleExecutionAgent(BaseExecutionAgent):
             tools=tools,
         )
 
-        self.execution_prompt = self.prompts.get(
-            "execution_prompt", LC_EXECUTION_PROMPT
-        )
-
+        self.execution_prompt = self.prompts.execution_prompt
         input_variables = [
             fn
             for _, fn, _, _ in Formatter().parse(self.execution_prompt)

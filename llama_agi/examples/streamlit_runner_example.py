@@ -11,6 +11,7 @@ from llama_agi.tools import search_notes, record_note, search_webpage
 
 from llama_index import ServiceContext, LLMPredictor
 
+
 st.set_page_config(layout="wide")
 st.header("🤖 Llama AGI 🦙")
 st.text("Use the setup tab to configure your LLM settings and initial objective+tasks.")

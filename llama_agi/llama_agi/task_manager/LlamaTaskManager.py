@@ -7,13 +7,7 @@ from llama_index.prompts.prompts import QuestionAnswerPrompt, RefinePrompt
 
 from llama_agi.task_manager.base import BaseTaskManager, LlamaTaskPrompts
 from llama_agi.utils import initialize_task_list_index
-from llama_agi.default_task_prompts import (
-    DEFAULT_TASK_PRIORITIZE_TMPL,
-    DEFAULT_REFINE_TASK_PRIORITIZE_TMPL,
-    DEFAULT_TASK_CREATE_TMPL,
-    DEFAULT_REFINE_TASK_CREATE_TMPL,
-    NO_COMPLETED_TASKS_SUMMARY,
-)
+from llama_agi.default_task_prompts import NO_COMPLETED_TASKS_SUMMARY
 
 
 class LlamaTaskManager(BaseTaskManager):
@@ -39,7 +33,7 @@ class LlamaTaskManager(BaseTaskManager):
     def __init__(
         self,
         tasks: List[str],
-        prompts: Optional[LlamaTaskPrompts] = None,
+        prompts: LlamaTaskPrompts = LlamaTaskPrompts(),
         task_service_context: Optional[ServiceContext] = None,
     ) -> None:
         super().__init__(
@@ -53,18 +47,11 @@ class LlamaTaskManager(BaseTaskManager):
             self.completed_tasks, service_context=self.task_service_context
         )
 
-        self.task_create_qa_template = self.prompts.get(
-            "task_create_qa_template", DEFAULT_TASK_CREATE_TMPL
-        )
-        self.task_create_refine_template = self.prompts.get(
-            "task_create_refine_template", DEFAULT_REFINE_TASK_CREATE_TMPL
-        )
-        self.task_prioritize_qa_template = self.prompts.get(
-            "task_prioritize_qa_template", DEFAULT_TASK_PRIORITIZE_TMPL
-        )
-        self.task_prioritize_refine_template = self.prompts.get(
-            "task_prioritize_refine_template", DEFAULT_REFINE_TASK_PRIORITIZE_TMPL
-        )
+        self.task_create_qa_template = self.prompts.task_create_qa_template
+        self.task_create_refine_template = self.prompts.task_create_refine_template
+
+        self.task_prioritize_qa_template = self.prompts.task_prioritize_qa_template
+        self.task_prioritize_refine_template = self.prompts.task_prioritize_refine_template
 
     def _get_task_create_templates(
         self, prev_task: str, prev_result: str

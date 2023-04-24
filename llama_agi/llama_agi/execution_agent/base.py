@@ -1,16 +1,22 @@
 from abc import abstractmethod
-from typing import Any, Dict, List, Optional, Union, TypedDict, NotRequired
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Union
 
 from langchain.agents.tools import Tool
 from langchain.llms import OpenAI, BaseLLM
 from langchain.chat_models.base import BaseChatModel
 from langchain.chat_models import ChatOpenAI
 
+from llama_agi.default_task_prompts import (
+    LC_PREFIX, LC_SUFFIX, LC_EXECUTION_PROMPT
+)
 
-class LlamaAgentPrompts(TypedDict):
-    execution_prompt: NotRequired[str]
-    agent_prefix: NotRequired[str]
-    agent_suffix: NotRequired[str]
+
+@dataclass
+class LlamaAgentPrompts:
+    execution_prompt: str = LC_EXECUTION_PROMPT
+    agent_prefix: str = LC_PREFIX
+    agent_suffix: str = LC_SUFFIX
 
 
 class BaseExecutionAgent:
@@ -30,7 +36,7 @@ class BaseExecutionAgent:
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
         model_name: str = "text-davinci-003",
         max_tokens: int = 512,
-        prompts: Optional[LlamaAgentPrompts] = None,
+        prompts: LlamaAgentPrompts = LlamaAgentPrompts(),
         tools: Optional[List[Tool]] = None,
     ) -> None:
         if llm:
@@ -44,7 +50,7 @@ class BaseExecutionAgent:
                 temperature=0, model_name=model_name, max_tokens=max_tokens
             )
         self.max_tokens = max_tokens
-        self.prompts = prompts if prompts else {}
+        self.prompts = prompts
         self.tools = tools if tools else []
 
     @abstractmethod
