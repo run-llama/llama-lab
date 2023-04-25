@@ -7,19 +7,20 @@ from langchain.llms import OpenAI
 from llama_agi.execution_agent import ToolExecutionAgent
 from llama_agi.runners import AutoStreamlitAGIRunner
 from llama_agi.task_manager import LlamaTaskManager
-from llama_agi.tools import search_notes, record_note, search_webpage
 
 from llama_index import ServiceContext, LLMPredictor
 
 
 st.set_page_config(layout="wide")
 st.header("🤖 Llama AGI 🦙")
-st.text("Use the setup tab to configure your LLM settings and initial objective+tasks.")
-st.text("Then use the Launch tab to run the AGI. Kill the process by clicking 'Stop' in the top right.")
+st.markdown("This demo uses the [llama-agi](https://github.com/run-llama/llama-lab/tree/main/llama_agi) package to create an AutoGPT-like agent, powered by [LlamaIndex](https://github.com/jerryjliu/llama_index) and Langchain. The AGI has access to tools that search the web and record notes, as it works to achieve an objective. Use the setup tab to configure your LLM settings and initial objective+tasks. Then use the Launch tab to run the AGI. Kill the AGI by refreshing the page.")
 
 setup_tab, launch_tab = st.tabs(["Setup", "Launch"])
 
 with setup_tab:
+    if 'init' in st.session_state:
+        st.success("Initialized!")
+
     st.subheader("LLM Setup")
     col1, col2, col3 = st.columns(3)
 
@@ -44,7 +45,7 @@ with setup_tab:
     st.subheader("AGI Setup")
     objective = st.text_input("Objective:", value="Solve world hunger")
     initial_task = st.text_input("Initial Task:", value="Create a list of tasks")
-
+    max_iterations = st.slider("Iterations until pause", value=1, min_value=1, max_value=10, step=1)
 
     if st.button('Initialize?'):
         os.environ['OPENAI_API_KEY'] = openai_api_key
@@ -67,6 +68,7 @@ with setup_tab:
             [initial_task], task_service_context=service_context
         )
 
+        from llama_agi.tools import search_notes, record_note, search_webpage
         tools = load_tools(["google-search-results-json"])
         tools = tools + [search_notes, record_note, search_webpage]
         st.session_state['execution_agent'] = ToolExecutionAgent(llm=llm, tools=tools)
@@ -75,13 +77,14 @@ with setup_tab:
         st.session_state['objective'] = objective
 
         st.session_state['init'] = True
-        st.success("Initialized!")
+        st.experimental_rerun()
 
 with launch_tab:
     st.subheader("AGI Status")
-    if st.button("Launch"):
+    if st.button(f"Continue for {max_iterations} Steps"):
         if st.session_state.get('init', False):
             # launch the auto runner
             with st.spinner("Running!"):
                 runner = AutoStreamlitAGIRunner(st.session_state['task_manager'], st.session_state['execution_agent'])
-                runner.run(st.session_state['objective'], st.session_state['initial_task'], 2)
+                runner.run(st.session_state['objective'], st.session_state['initial_task'], 2, max_iterations=max_iterations)
+
