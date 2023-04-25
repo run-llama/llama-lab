@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "llama_agi"
-version = "0.1.1"
+version = "0.1.2"
 description = "Building AGI loops using LlamaIndex and Langchain"
 authors = []
 license = "MIT"
