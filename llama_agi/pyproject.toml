@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "llama_agi"
-version = "0.1.2"
+version = "0.2.0"
 description = "Building AGI loops using LlamaIndex and Langchain"
 authors = []
 license = "MIT"
@@ -13,10 +13,12 @@ keywords = ["LLM", "LlamaIndex", "Langchain", "AGI"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-langchain = "==0.0.141"
-llama-index = "==0.5.16"
-streamlit = ">=1.21.0"
-
+altair = "==4.2.2"
+langchain = "==0.0.154"
+llama-index = "==0.6.13"
+streamlit = "==1.21.0"
+transformers = ">=0.4.29"
+google-api-python-client = ">=2.87.0"
 
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.0.249"

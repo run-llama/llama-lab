@@ -35,7 +35,9 @@ class AutoAGIRunner(BaseAGIRunner):
                 completed_tasks_summary=initial_completed_tasks_summary,
             )
 
-            initial_task_list = self.task_manager.parse_task_list(initial_task_list_result['output'])
+            initial_task_list = self.task_manager.parse_task_list(
+                initial_task_list_result["output"]
+            )
 
             # add tasks to the task manager
             self.task_manager.add_new_tasks(initial_task_list)
@@ -53,7 +55,7 @@ class AutoAGIRunner(BaseAGIRunner):
                 objective=objective,
                 cur_task=cur_task,
                 completed_tasks_summary=completed_tasks_summary,
-            )['output']
+            )["output"]
 
             # store the task and result as completed
             self.task_manager.add_completed_task(cur_task, result)

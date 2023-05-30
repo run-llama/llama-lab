@@ -12,7 +12,7 @@ from llama_agi.default_task_prompts import NO_COMPLETED_TASKS_SUMMARY
 
 class LlamaTaskManager(BaseTaskManager):
     """Llama Task Manager
-    
+
     This task manager uses LlamaIndex to create and prioritize tasks. Using
     the LlamaTaskPrompts, the task manager will create tasks that work
     towards achieving an overall objective.
@@ -24,12 +24,13 @@ class LlamaTaskManager(BaseTaskManager):
 
     Args:
         tasks (List[str]): The initial list of tasks to complete.
-        prompts: (LlamaTaskPrompts): The prompts to control the task creation 
+        prompts: (LlamaTaskPrompts): The prompts to control the task creation
         and prioritization.
-        tasK_service_context (ServiceContext): The LlamaIndex service context to use 
+        tasK_service_context (ServiceContext): The LlamaIndex service context to use
         for task creation and prioritization.
 
     """
+
     def __init__(
         self,
         tasks: List[str],
@@ -51,7 +52,9 @@ class LlamaTaskManager(BaseTaskManager):
         self.task_create_refine_template = self.prompts.task_create_refine_template
 
         self.task_prioritize_qa_template = self.prompts.task_prioritize_qa_template
-        self.task_prioritize_refine_template = self.prompts.task_prioritize_refine_template
+        self.task_prioritize_refine_template = (
+            self.prompts.task_prioritize_refine_template
+        )
 
     def _get_task_create_templates(
         self, prev_task: str, prev_result: str
@@ -104,19 +107,19 @@ class LlamaTaskManager(BaseTaskManager):
         """Generate a summary of completed tasks."""
         if len(self.completed_tasks) == 0:
             return NO_COMPLETED_TASKS_SUMMARY
-        summary = self.completed_tasks_index.query(
-            "Summarize the current completed tasks", response_mode="tree_summarize"
+        summary = self.completed_tasks_index.as_query_engine(
+            response_mode="tree_summarize"
+        ).query(
+            "Summarize the current completed tasks",
         )
         return str(summary)
 
     def prioritize_tasks(self, objective: str) -> None:
         """Prioritize the current list of incomplete tasks."""
         (text_qa_template, refine_template) = self._get_task_prioritize_templates()
-        prioritized_tasks = self.current_tasks_index.query(
-            objective,
-            text_qa_template=text_qa_template,
-            refine_template=refine_template,
-        )
+        prioritized_tasks = self.current_tasks_index.as_query_engine(
+            text_qa_template=text_qa_template, refine_template=refine_template
+        ).query(objective)
 
         new_tasks = []
         for task in str(prioritized_tasks).split("\n"):
@@ -135,11 +138,9 @@ class LlamaTaskManager(BaseTaskManager):
         (text_qa_template, refine_template) = self._get_task_create_templates(
             prev_task, prev_result
         )
-        task_list_response = self.completed_tasks_index.query(
-            objective,
-            text_qa_template=text_qa_template,
-            refine_template=refine_template,
-        )
+        task_list_response = self.completed_tasks_index.as_query_engine(
+            text_qa_template=text_qa_template, refine_template=refine_template
+        ).query(objective)
         new_tasks = self.parse_task_list(str(task_list_response))
         self.add_new_tasks(new_tasks)
 

@@ -17,5 +17,7 @@ def record_note(note: str) -> str:
 def search_notes(query_str: str) -> str:
     """Useful for searching through notes that you previously recorded."""
     global note_index
-    response = note_index.query(query_str, similarity_top_k=3, response_mode="compact")
+    response = note_index.as_query_engine(
+        similarity_top_k=3,
+    ).query(query_str)
     return str(response)

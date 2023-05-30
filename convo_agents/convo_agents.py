@@ -5,7 +5,7 @@ The goal of this is to simulate conversation between two agents.
 """
 
 from llama_index import (
-    GPTSimpleVectorIndex, GPTListIndex, Document, ServiceContext
+    GPTVectorStoreIndex, GPTListIndex, Document, ServiceContext
 )
 from llama_index.indices.base import BaseGPTIndex
 from llama_index.data_structs import Node
@@ -68,7 +68,7 @@ class ConvoAgent(BaseModel):
     ) -> "ConvoAgent":
         name = name or "Agent"
         st_memory = st_memory or deque()
-        lt_memory = lt_memory or GPTSimpleVectorIndex([])
+        lt_memory = lt_memory or GPTVectorStoreIndex([])
         service_context = service_context or ServiceContext.from_defaults()
         return cls(
             name=name,
@@ -94,12 +94,9 @@ class ConvoAgent(BaseModel):
             prev_message = self.st_memory[-1]
 
         st_memory_text = "\n".join([l for l in self.st_memory])
-        summary_response = self.lt_memory.query(
+        summary_response = self.lt_memory.as_query_engine(**self.lt_memory_query_kwargs).query(
             f"Tell me a bit more about any context that's relevant "
-            f"to the current messages: \n{st_memory_text}",
-            # similarity_top_k=10,
-            response_mode="compact",
-            **self.lt_memory_query_kwargs
+            f"to the current messages: \n{st_memory_text}"
         )
         
         # add both the long-term memory summary and the short-term conversation
@@ -114,9 +111,7 @@ class ConvoAgent(BaseModel):
         )
         qa_prompt = QuestionAnswerPrompt(full_qa_prompt_tmpl)
         
-        response = list_builder.query(
-            "Generate the next message in the conversation.", 
-            text_qa_template=qa_prompt, 
-            response_mode="compact"
+        response = list_builder.as_query_engine(text_qa_template=qa_prompt).query(
+            "Generate the next message in the conversation."
         )    
         return str(response)

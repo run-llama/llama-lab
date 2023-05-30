@@ -7,9 +7,7 @@ from langchain.llms import OpenAI, BaseLLM
 from langchain.chat_models.base import BaseChatModel
 from langchain.chat_models import ChatOpenAI
 
-from llama_agi.default_task_prompts import (
-    LC_PREFIX, LC_SUFFIX, LC_EXECUTION_PROMPT
-)
+from llama_agi.default_task_prompts import LC_PREFIX, LC_SUFFIX, LC_EXECUTION_PROMPT
 
 
 @dataclass
@@ -21,16 +19,17 @@ class LlamaAgentPrompts:
 
 class BaseExecutionAgent:
     """Base Execution Agent
-    
+
     Args:
         llm (Union[BaseLLM, BaseChatModel]): The langchain LLM class to use.
-        model_name: (str): The name of the OpenAI model to use, if the LLM is 
+        model_name: (str): The name of the OpenAI model to use, if the LLM is
         not provided.
         max_tokens: (int): The maximum number of tokens the LLM can generate.
         prompts: (LlamaAgentPrompts): The prompt templates used during execution.
-        tools: (List[Tool]): The list of langchain tools for the execution 
+        tools: (List[Tool]): The list of langchain tools for the execution
         agent to use.
     """
+
     def __init__(
         self,
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
