@@ -12,30 +12,31 @@ from llama_agi.execution_agent.base import BaseExecutionAgent, LlamaAgentPrompts
 
 class ToolExecutionAgent(BaseExecutionAgent):
     """Tool Execution Agent
-    
+
     This agent is a wrapper around the zero-shot agent from Langchain. Using
-    a set of tools, the agent is expected to carry out and complete some task 
+    a set of tools, the agent is expected to carry out and complete some task
     that will help achieve an overall objective.
-    
-    The agents overall behavior is controlled by the LlamaAgentPrompts.agent_prefix 
+
+    The agents overall behavior is controlled by the LlamaAgentPrompts.agent_prefix
     and LlamaAgentPrompts.agent_suffix prompt templates.
 
-    The execution template kwargs are automatically extracted and expected to be 
-    specified in execute_task(). 
+    The execution template kwargs are automatically extracted and expected to be
+    specified in execute_task().
 
     execute_task() also returns the intermediate steps, for additional debugging and is
-    used for the streamlit example. 
+    used for the streamlit example.
 
     Args:
         llm (Union[BaseLLM, BaseChatModel]): The langchain LLM class to use.
-        model_name: (str): The name of the OpenAI model to use, if the LLM is 
+        model_name: (str): The name of the OpenAI model to use, if the LLM is
         not provided.
         max_tokens: (int): The maximum number of tokens the LLM can generate.
-        prompts: (LlamaAgentPrompts): The prompt templates used during execution. 
-        The Tool Execution Agent uses LlamaAgentPrompts.agent_prefix and 
+        prompts: (LlamaAgentPrompts): The prompt templates used during execution.
+        The Tool Execution Agent uses LlamaAgentPrompts.agent_prefix and
         LlamaAgentPrompts.agent_suffix.
         tools: (List[Tool]): The list of langchain tools for the execution agent to use.
     """
+
     def __init__(
         self,
         llm: Optional[Union[BaseLLM, BaseChatModel]] = None,
@@ -71,7 +72,10 @@ class ToolExecutionAgent(BaseExecutionAgent):
             llm_chain=self._llm_chain, tools=self.tools, verbose=True
         )
         self._execution_chain = AgentExecutor.from_agent_and_tools(
-            agent=self._agent, tools=self.tools, verbose=True, return_intermediate_steps=True
+            agent=self._agent,
+            tools=self.tools,
+            verbose=True,
+            return_intermediate_steps=True,
         )
 
     def execute_task(self, **prompt_kwargs: Any) -> Dict[str, str]:
