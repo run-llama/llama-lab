@@ -20,9 +20,7 @@ def search_webpage(prompt: str) -> str:
         documents = loader.load_data(urls=[url])
         service_context = ServiceContext.from_defaults(chunk_size_limit=512)
         index = initialize_search_index(documents, service_context=service_context)
-        query_result = index.query(
-            query_str, similarity_top_k=3, response_mode="compact"
-        )
+        query_result = index.as_query_engine(similarity_top_k=3).query(query_str)
         return str(query_result)
     except ValueError as e:
         return str(e)
