@@ -12,7 +12,7 @@ include = [
 keywords = ["LLM", "LlamaIndex", "Langchain", "AGI"]
 
 [tool.poetry.dependencies]
-python = ">=3.8.1,<4.0"
+python = ">=3.8.1,!=3.9.7,<4.0"
 altair = "==4.2.2"
 langchain = "==0.0.154"
 llama-index = "==0.6.13"
